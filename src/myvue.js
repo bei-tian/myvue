@@ -8,13 +8,23 @@ export function MyVue(options) {
     },
     set: function(newVal) {
       this._val = newVal
-      //更新dom
+      
       let node = document.querySelector(options.el)
-      var reg = /\{\{(.*)\}\}/
-      if (reg.test(node.textContent)) {
-        let exp = RegExp.$1.trim() //msg
-        node.textContent = data[exp]
-      }
+      compile(node,data)
     }
+  })
+}
+
+function compile(node,data) {
+  //循环处理每个子节点
+  node.childNodes.forEach(childNode => {
+    let isTextNode = (childNode.nodeType == 3) //判断是否文本节点
+    let reg = /\{\{(.*)\}\}/
+    if (isTextNode && reg.test(childNode.textContent)) {
+      let exp = RegExp.$1.trim()
+      childNode.textContent = data[exp]
+    }
+    
+    compile(childNode,data)
   })
 }
