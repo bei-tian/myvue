@@ -1,5 +1,6 @@
 export function MyVue(options) {
-  Object.defineProperty(options.data, 'msg', {
+  let data = options.data
+  Object.defineProperty(data, 'msg', {
     enumerable: true,
     configurable: false,
     get: function() {
@@ -9,10 +10,10 @@ export function MyVue(options) {
       this._val = newVal
       //更新dom
       let node = document.querySelector(options.el)
-      var reg = /\{\{(.*)\}\}/;
+      var reg = /\{\{(.*)\}\}/
       if (reg.test(node.textContent)) {
-        let exp = RegExp.$1.trim(); //msg
-        node.textContent = data[exp];
+        let exp = RegExp.$1.trim() //msg
+        node.textContent = data[exp]
       }
     }
   })
