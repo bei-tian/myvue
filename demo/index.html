@@ -9,7 +9,9 @@
 
 <div id="app">
     <span>{{ msg }}</span>
-    <span>{{ msg }}</span>
+    <span v-text="msg"></span>
+    <span v-html="msg"></span>
+    <input type="text" v-model="msg" />
 </div>
 <script src="./build.js"></script>
 </body>
