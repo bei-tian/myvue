@@ -1,3 +1,5 @@
+import { Dep } from './dep'
+
 const updater = {
   textUpdater(node, value) {
     node.textContent = value
@@ -15,11 +17,7 @@ export function compile(node,data) {
     let isTextNode = (childNode.nodeType == 3) //判断是否文本节点
     let isElementNode = (childNode.nodeType == 1) //判断是否element节点
     if (isTextNode) {
-      let reg = /\{\{(.*)\}\}/
-      if (reg.test(childNode.textContent)) {
-        let exp = RegExp.$1.trim()
-        updater.textUpdater(childNode, data[exp])
-      }
+      compileText(childNode, data)
     }
     
     if(isElementNode) {
@@ -37,13 +35,26 @@ function compileElement(node, data) {
     if(attr.name.indexOf('v-') == 0) {
       let exp = attr.value //msg,sub.msg3
       let dir = attr.name.substring(2) //text,html,model
-      window.updaterFn = function (value) {
+      Dep.updaterFn = function (value) {
         updater[dir+'Updater'](node , value)
       }
       getDataVal(data, exp) //这里会触发setter
-      window.updaterFn = null
+      Dep.updaterFn = null
     }
   })
+}
+
+function compileText(node, data) {
+  let reg = /\{\{(.*)\}\}/
+  if (reg.test(node.textContent)) {
+    let exp = RegExp.$1.trim()
+    Dep.updaterFn = function (value) {
+      updater['textUpdater'](node , value)
+    }
+    getDataVal(data, exp) //这里会触发setter
+    Dep.updaterFn = null
+  }
+  
 }
 
 function getDataVal(data, exp) {
