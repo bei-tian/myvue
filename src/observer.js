@@ -1,6 +1,4 @@
-import { compile } from './compile'
-
-export function observer(data,node) {
+export function observer(data) {
   if (!data || typeof data != 'object') {
     return
   }
@@ -9,19 +7,22 @@ export function observer(data,node) {
   keys.forEach(key => {
     let val = data[key]
     let child = val
+    let updaterFn
     Object.defineProperty(data, key, {
       enumerable: true,
       configurable: false,
       get: function() {
+        if (window.updaterFn) {
+          updaterFn = window.updaterFn
+        }
         return val
       },
       set: function(newVal) {
         val = newVal
-        
-        compile(node, window.data)
+        updaterFn(newVal);
       }
     })
     
-    observer(child, node)
+    observer(child)
   })
 }

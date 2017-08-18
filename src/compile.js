@@ -30,14 +30,18 @@ export function compile(node,data) {
   })
 }
 
+//希望把这里的updater[dir+'Updater'](node , value) 放到setter中去执行
 function compileElement(node, data) {
   let attrs = node.attributes;
   [].slice.call(attrs).forEach(attr => {
     if(attr.name.indexOf('v-') == 0) {
       let exp = attr.value //msg,sub.msg3
       let dir = attr.name.substring(2) //text,html,model
-      let value = getDataVal(data, exp)
-      updater[dir+'Updater'](node , value);
+      window.updaterFn = function (value) {
+        updater[dir+'Updater'](node , value)
+      }
+      getDataVal(data, exp) //这里会触发setter
+      window.updaterFn = null
     }
   })
 }
