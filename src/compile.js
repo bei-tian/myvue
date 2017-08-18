@@ -34,10 +34,19 @@ function compileElement(node, data) {
   let attrs = node.attributes;
   [].slice.call(attrs).forEach(attr => {
     if(attr.name.indexOf('v-') == 0) {
-      let exp = attr.value //msg
+      let exp = attr.value //msg,sub.msg3
       let dir = attr.name.substring(2) //text,html,model
-      updater[dir+'Updater'](node ,data[exp]);
+      let value = getDataVal(data, exp)
+      updater[dir+'Updater'](node , value);
     }
   })
+}
+
+function getDataVal(data, exp) {
+  let val = data
+  exp.split('.').forEach(key => {
+    val = val[key];
+  })
+  return val
 }
 
