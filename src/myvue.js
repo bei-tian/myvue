@@ -1,11 +1,13 @@
 import { observer } from './observer'
-import { compile } from './compile'
+import { Compile } from './compile'
 
 export function MyVue(options) {
+  let vm = this
   let data = options.data
-  let node = document.querySelector(options.el)
+  
+  vm._data = options.data
   
   observer(data)
-  compile(node, data)
+  new Compile(options.el, vm)
 }
 
