@@ -1,4 +1,5 @@
 import { Dep } from './dep'
+import { Watcher } from './watcher'
 
 export class Compile {
   constructor(el,vm) {
@@ -23,7 +24,7 @@ export class Compile {
         this.compileElement(childNode)
       }
     
-      this.compile(childNode)
+      this.compile(childNode) //递归子节点
     })
   }
   
@@ -66,10 +67,12 @@ export class Compile {
   
   bind(node, vm, exp, dir) {
     let updaterFn = updater[dir + 'Updater']
-    Dep.updaterFn = function (value) {
+    
+    new Watcher(vm, function (value) {
       updaterFn(node , value)
-    }
-    this.getVmVal(vm, exp) //这里会触发setter
+    })
+    
+    updaterFn(node , this.getVmVal(vm, exp)) //初始化原始数据，并触发setter
     Dep.updaterFn = null
   }
 }

@@ -1,12 +1,12 @@
 export class Dep {
   sub = []
   
-  append(fn) {
-    this.sub.push(fn)
+  append(watcher) {
+    this.sub.push(watcher)
   }
   notify(value) {
-    this.sub.map(fn => {
-      fn(value);
+    this.sub.map(watcher => {
+      watcher.update(value)
     })
   }
 }

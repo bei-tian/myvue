@@ -13,8 +13,8 @@ export function observer(data) {
       enumerable: true,
       configurable: false,
       get: function() {
-        if (Dep.updaterFn) {
-          dep.append(Dep.updaterFn)
+        if (Dep.target) {
+          dep.append(Dep.target)
         }
         return val
       },

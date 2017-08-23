@@ -7,6 +7,7 @@ window.data = {
     msg3: 'hello3'
   }
 }
+
 new MyVue({
   el: '#app',
   data: data
