@@ -5,14 +5,31 @@ export class Compile {
   constructor(el,vm) {
     this.$vm = vm;
     this.$el = this.isElementNode(el) ? el : document.querySelector(el);
-  
+    if (vm.$options.template) {
+      let el = this.parseToDOM(vm.$options.template)[0]
+      this.$fragment = this.node2Fragment(el)
+    } else {
+      this.$fragment = this.node2Fragment(this.$el)
+    }
     this.init();
+    this.$el.appendChild(this.$fragment)
   }
   
   init() {
-    this.compile(this.$el);
+    this.compile(this.$fragment);
   }
   
+  node2Fragment(el) {
+    var fragment = document.createDocumentFragment(),
+      child;
+    
+    // 将原生节点拷贝到fragment
+    while (child = el.firstChild) {
+      fragment.appendChild(child);
+    }
+    
+    return fragment;
+  }
   //compile all el
   compile(el) {
     el.childNodes.forEach(childNode => {
@@ -75,6 +92,14 @@ export class Compile {
     updaterFn(node , this.getVmVal(vm, exp)) //初始化原始数据，并触发setter
     Dep.updaterFn = null
   }
+  
+  
+  parseToDOM(str){
+  var div = document.createElement("div");
+  if(typeof str == "string")
+    div.innerHTML = str;
+  return div.childNodes;
+}
 }
 
 

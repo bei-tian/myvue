@@ -1,14 +1,11 @@
 import { MyVue } from '../src/myvue';
 
 window.data = {
-  msg: 'hello',
-  msg2: 'hello2',
-  sub: {
-    msg3: 'hello3'
-  }
+  msg: 'hello'
 }
 
 new MyVue({
   el: '#app',
-  data: data
+  data: data,
+  template: '<span>{{ msg }}</span>'
 });
