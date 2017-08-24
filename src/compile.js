@@ -1,3 +1,4 @@
+import { MyVue } from './myvue'
 import { Dep } from './dep'
 import { Watcher } from './watcher'
 
@@ -5,6 +6,7 @@ export class Compile {
   constructor(el,vm) {
     this.$vm = vm;
     this.$el = this.isElementNode(el) ? el : document.querySelector(el);
+    
     if (vm.$options.template) {
       let el = this.parseToDOM(vm.$options.template)[0]
       this.$fragment = this.node2Fragment(el)
@@ -20,14 +22,23 @@ export class Compile {
   }
   
   node2Fragment(el) {
-    var fragment = document.createDocumentFragment(),
+    let fragment = document.createDocumentFragment(),
       child;
     
     // 将原生节点拷贝到fragment
     while (child = el.firstChild) {
       fragment.appendChild(child);
+      //处理组件
+      if (this.isElementNode(child)) {
+        let tagName = child.tagName.toLowerCase()
+        
+        let MyVueComponent = MyVue.queueComponent[tagName]
+        if (MyVueComponent) {
+          new MyVueComponent()
+        }
+      }
     }
-    
+    console.log(fragment)
     return fragment;
   }
   //compile all el
