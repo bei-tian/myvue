@@ -1,4 +1,4 @@
-import { MyVue } from '../src/myvue';
+import MyVue from '../src/index';
 
 MyVue.component('my-component', {
   el: '#app',
@@ -8,11 +8,13 @@ MyVue.component('my-component', {
   template: '<div>{{ msg2 }}</div>'
 })
 
+window.data = {
+  msg: 'hello'
+}
+
 new MyVue({
   el: '#app',
-  data: {
-    msg: 'hello'
-  },
+  data: data,
   template: '<span><span> {{msg}} </span><my-component></my-component><span v-text="msg"></span></span>'
 });
 

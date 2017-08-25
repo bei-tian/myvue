@@ -1,4 +1,4 @@
-import { MyVue } from './myvue'
+import MyVue from './instance/index'
 import { Watcher } from './watcher'
 
 export class Compile {
