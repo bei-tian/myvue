@@ -14,7 +14,12 @@ export class MyVue {
     vm.$options = options
 
     observer(data)
-    new Compile(options.el, vm)
+    new Compile(vm)
+  }
+  
+  
+  $amount(el) {
+    document.querySelector(el).appendChild(this.$el);
   }
   
 }

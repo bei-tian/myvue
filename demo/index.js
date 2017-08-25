@@ -10,10 +10,10 @@ MyVue.component('my-component', {
   },
   template: '<div>{{ msg2 }}</div>'
 })
-new MyVue({
-  el: '#app',
-  data: data,
-  template: '<span><span> {{msg}} </span><my-component></my-component><span>{{msg}} </span></span>'
-});
 
+const app = new MyVue({
+  data: data,
+  template: '<span><span> {{msg}} </span><my-component></my-component><span v-text="msg"></span></span>'
+});
+app.$amount('#app')
 

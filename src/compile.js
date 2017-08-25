@@ -1,20 +1,14 @@
 import { MyVue } from './myvue'
-import { Dep } from './dep'
 import { Watcher } from './watcher'
 
 export class Compile {
-  constructor(el,vm) {
+  constructor(vm) {
     this.$vm = vm;
-    this.$el = this.isElementNode(el) ? el : document.querySelector(el);
-    
-    if (vm.$options.template) {
-      let el = this.parseToDOM(vm.$options.template)[0]
-      this.$fragment = this.node2Fragment(el)
-    } else {
-      this.$fragment = this.node2Fragment(this.$el)
-    }
+    this.$el = this.parseToDOM(vm.$options.template)[0]
+    this.$fragment = this.node2Fragment(this.$el)
     this.init();
     this.$el.appendChild(this.$fragment)
+    vm.$el = this.$el;
   }
   
   init() {
@@ -28,17 +22,7 @@ export class Compile {
     // 将原生节点拷贝到fragment
     while (child = el.firstChild) {
       fragment.appendChild(child);
-      //处理组件
-      if (this.isElementNode(child)) {
-        let tagName = child.tagName.toLowerCase()
-        
-        let MyVueComponent = MyVue.queueComponent[tagName]
-        if (MyVueComponent) {
-          new MyVueComponent()
-        }
-      }
     }
-    console.log(fragment)
     return fragment;
   }
   //compile all el
@@ -49,7 +33,17 @@ export class Compile {
       }
     
       if(this.isElementNode(childNode)) {
-        this.compileElement(childNode)
+        
+        //处理组件
+        let parent = childNode.parentNode
+        let tagName = childNode.tagName.toLowerCase()
+        let MyVueComponent = MyVue.queueComponent[tagName]
+        if (MyVueComponent) {
+          let sub = new MyVueComponent()
+          parent.replaceChild(sub.$el,childNode)
+        } else {
+          this.compileElement(childNode)
+        }
       }
     
       this.compile(childNode) //递归子节点
@@ -63,6 +57,7 @@ export class Compile {
         let exp = attr.value //msg,sub.msg3
         let dir = attr.name.substring(2) //text,html,model
         this.bind(node, this.$vm, exp ,dir);
+        node.removeAttribute(attr.name);
       }
     })
   }
@@ -99,9 +94,7 @@ export class Compile {
     new Watcher(vm, function (value) {
       updaterFn(node , value)
     })
-    
     updaterFn(node , this.getVmVal(vm, exp)) //初始化原始数据，并触发setter
-    Dep.updaterFn = null
   }
   
   
