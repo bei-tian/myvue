@@ -1,8 +1,5 @@
 import { MyVue } from '../src/myvue';
 
-window.data = {
-  msg: 'hello'
-}
 MyVue.component('my-component', {
   el: '#app',
   data:{
@@ -11,9 +8,11 @@ MyVue.component('my-component', {
   template: '<div>{{ msg2 }}</div>'
 })
 
-const app = new MyVue({
-  data: data,
+new MyVue({
+  el: '#app',
+  data: {
+    msg: 'hello'
+  },
   template: '<span><span> {{msg}} </span><my-component></my-component><span v-text="msg"></span></span>'
 });
-app.$amount('#app')
 

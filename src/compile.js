@@ -100,7 +100,7 @@ export class Compile {
   
   parseToDOM(str){
   var div = document.createElement("div");
-  if(typeof str == "string")
+  if(typeof str === "string")
     div.innerHTML = str;
   return div.childNodes;
 }

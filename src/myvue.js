@@ -1,6 +1,7 @@
 import { observer } from './observer'
 import { Compile } from './compile'
 
+let uid = 0;
 export class MyVue {
   constructor(options) {
     this._init(options)
@@ -8,6 +9,7 @@ export class MyVue {
   
   _init(options) {
     let vm = this
+    vm._uid = uid++
     let data = options.data
   
     vm._data = options.data
@@ -15,6 +17,11 @@ export class MyVue {
 
     observer(data)
     new Compile(vm)
+
+    //根节点自动挂载
+    if (vm._uid === 0) {
+      vm.$amount(options.el)
+    }
   }
   
   
