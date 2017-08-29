@@ -9,12 +9,21 @@ MyVue.component('my-component', {
 })
 
 window.data = {
-  msg: 'hello'
+  msg: 'hello',
+  msg2: 'world'
 }
 
-new MyVue({
+let vm = new MyVue({
   el: '#app',
   data: data,
-  template: '<span><span> {{msg}} </span><my-component></my-component><span v-text="msg"></span></span>'
+  computed: {
+    reversedMsg: function () {
+      return this.msg.split('').reverse().join('')
+    },
+    concat: function () {
+      return this.msg + this.msg2
+    }
+  },
+  template: '<span><span> {{msg}} </span><my-component></my-component><span v-text="msg"></span><div v-text="reversedMsg"></div></span>'
 });
-
+console.log(vm)

@@ -1,5 +1,5 @@
 import MyVue from './instance/index'
-import { Watcher } from './watcher'
+import { Watcher } from './observer/watcher'
 
 export class Compile {
   constructor(vm) {
@@ -80,7 +80,7 @@ export class Compile {
   }
   
   getVmVal(vm, exp) {
-    let val = vm._data;
+    let val = vm;
     exp.split('.').forEach(key => {
       val = val[key];
     })
@@ -99,11 +99,11 @@ export class Compile {
   
   
   parseToDOM(str){
-  var div = document.createElement("div");
-  if(typeof str === "string")
-    div.innerHTML = str;
-  return div.childNodes;
-}
+    var div = document.createElement("div");
+    if(typeof str === "string")
+      div.innerHTML = str;
+    return div.childNodes;
+  }
 }
 
 

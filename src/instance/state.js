@@ -1,6 +1,10 @@
-import { observer } from '../observer'
+import { observer } from '../observer/observer'
+import { Watcher } from '../observer/watcher'
 import { Compile } from '../compile'
 
+let noop = function () {
+
+}
 
 export function initState(vm) {
   const opts = vm.$options
@@ -11,7 +15,7 @@ export function initState(vm) {
     observer(vm._data = {})
   }
   //initProps
-  //initComputer
+  initComputed(vm, opts.computed)
   
   new Compile(vm)
 }
@@ -26,6 +30,25 @@ function initData(vm) {
   keys.forEach(key => {
     proxy(vm, '_data', key)
   })
+}
+
+function initComputed(vm, computed) {
+  for (let key in computed) {
+    let userDef = computed[key]
+    let watcher = new Watcher(vm, userDef, noop)
+    
+    //把computed属性代理到vm上
+    if (!(key in vm)) {
+      Object.defineProperty(vm, key, {
+        enumerable: true,
+        configurable: false,
+        get: function() {
+          return watcher.value
+        },
+        set: noop
+      })
+    }
+  }
 }
 
 //将data数据代理到vm
