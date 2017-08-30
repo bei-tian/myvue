@@ -5,7 +5,7 @@ export function initExtend(MyVue) {
     }
     Sub.prototype = Object.create(MyVue.prototype)
     Sub.prototype.constructor = Sub
-    
+    Sub._options = options
     return Sub
   }
   

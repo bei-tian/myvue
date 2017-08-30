@@ -1,4 +1,4 @@
-import { observer } from '../observer/observer'
+import { observer, defineReactive } from '../observer/observer'
 import { Watcher } from '../observer/watcher'
 import { Compile } from '../compile'
 
@@ -8,7 +8,7 @@ let noop = function () {
 
 export function initState(vm) {
   const opts = vm.$options
-  
+  if(opts.props) initProps(vm, opts.props)
   if (opts.data) {
     initData(vm)
   } else {
@@ -18,6 +18,19 @@ export function initState(vm) {
   initComputed(vm, opts.computed)
   
   new Compile(vm)
+}
+
+function initProps(vm, propsOptions) {
+  const props = vm._props = vm.$options._props
+  for (let key in propsOptions) {
+    let prop = propsOptions[key]
+    const value = props[prop]
+    defineReactive(props, prop, value)
+  
+    if (!(key in vm)) {
+      proxy(vm, `_props`, prop)
+    }
+  }
 }
 
 

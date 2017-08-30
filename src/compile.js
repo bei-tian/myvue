@@ -21,7 +21,7 @@ export class Compile {
     
     // 将原生节点拷贝到fragment
     while (child = el.firstChild) {
-      fragment.appendChild(child);
+      fragment.appendChild(child)
     }
     return fragment;
   }
@@ -33,12 +33,12 @@ export class Compile {
       }
     
       if(this.isElementNode(childNode)) {
-        
         //处理组件
         let parent = childNode.parentNode
         let tagName = childNode.tagName.toLowerCase()
         let MyVueComponent = MyVue.queueComponent[tagName]
         if (MyVueComponent) {
+          this.fetchPropData(MyVueComponent._options, childNode)
           let sub = new MyVueComponent()
           parent.replaceChild(sub.$el,childNode)
         } else {
@@ -53,7 +53,7 @@ export class Compile {
   compileElement(node) {
     let attrs = node.attributes;
     [].slice.call(attrs).forEach(attr => {
-      if(attr.name.indexOf('v-') == 0) {
+      if(attr.name.indexOf('v-') === 0) {
         let exp = attr.value //msg,sub.msg3
         let dir = attr.name.substring(2) //text,html,model
         this.bind(node, this.$vm, exp ,dir);
@@ -72,11 +72,11 @@ export class Compile {
 
   
   isTextNode(node) {
-    return node.nodeType == 3
+    return node.nodeType === 3
   }
   
   isElementNode(node) {
-    return node.nodeType == 1
+    return node.nodeType === 1
   }
   
   getVmVal(vm, exp) {
@@ -97,6 +97,15 @@ export class Compile {
     updaterFn(node , this.getVmVal(vm, exp)) //初始化原始数据，并触发setter
   }
   
+  
+  fetchPropData(options, node) {
+    let prop = {}
+    let attr = node.attributes;
+    [].slice.call(attr).forEach(attr => {
+      prop[attr.name] = attr.value
+    })
+    options._props = prop
+  }
   
   parseToDOM(str){
     var div = document.createElement("div");
