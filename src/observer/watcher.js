@@ -18,10 +18,12 @@ export class Watcher {
     }
     
     this.value = this.get()
+    
   }
   
-  update(newVal) {
-    this.cb(newVal);
+  update() {
+    this.value = this.getter.call(this.vm, this.vm)
+    this.cb(this.value)
   }
   
   get() {

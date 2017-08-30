@@ -38,7 +38,7 @@ export class Compile {
         let tagName = childNode.tagName.toLowerCase()
         let MyVueComponent = MyVue.queueComponent[tagName]
         if (MyVueComponent) {
-          this.fetchPropData(MyVueComponent._options, childNode)
+          this.fetchPropData(MyVueComponent._options, childNode) //缓存子组件的prop值
           let sub = new MyVueComponent()
           parent.replaceChild(sub.$el,childNode)
         } else {
@@ -56,7 +56,11 @@ export class Compile {
       if(attr.name.indexOf('v-') === 0) {
         let exp = attr.value //msg,sub.msg3
         let dir = attr.name.substring(2) //text,html,model
-        this.bind(node, this.$vm, exp ,dir);
+        if(dir.indexOf('bind') === 0) {
+        
+        } else {
+          this.bind(node, this.$vm, exp, dir);
+        }
         node.removeAttribute(attr.name);
       }
     })
@@ -91,7 +95,7 @@ export class Compile {
   bind(node, vm, exp, dir) {
     let updaterFn = updater[dir + 'Updater']
     
-    new Watcher(vm, function (value) {
+    new Watcher(vm, exp, function (value) {
       updaterFn(node , value)
     })
     updaterFn(node , this.getVmVal(vm, exp)) //初始化原始数据，并触发setter

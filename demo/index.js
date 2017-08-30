@@ -25,6 +25,7 @@ let vm = new MyVue({
       return this.msg + this.msg2
     }
   },
-  template: '<span><span> {{msg}} </span><my-component prop1="prop1-val"></my-component><span v-text="msg"></span><div v-text="reversedMsg"></div></span>'
+  template: '<span><span> {{msg}} </span><my-component prop1="concat"></my-component><span v-text="msg"></span><div v-text="reversedMsg"></div></span>'
 });
 
+console.log(vm)

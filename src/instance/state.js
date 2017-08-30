@@ -1,6 +1,7 @@
 import { observer, defineReactive } from '../observer/observer'
 import { Watcher } from '../observer/watcher'
 import { Compile } from '../compile'
+import { Dep } from '../observer/dep'
 
 let noop = function () {
 
@@ -56,6 +57,11 @@ function initComputed(vm, computed) {
         enumerable: true,
         configurable: false,
         get: function() {
+          if (Dep.target) {
+            //编译计算属性模板指令时，通过这个函数来触发data的getter，
+            // 进而将模板指令的watcher加入到data属性对应的dep队列中
+            watcher.getter.call(vm, vm);
+          }
           return watcher.value
         },
         set: noop
