@@ -1,6 +1,6 @@
 import { observer, defineReactive } from '../observer/observer'
 import { Watcher } from '../observer/watcher'
-import { Compile } from '../compile'
+
 import { Dep } from '../observer/dep'
 
 let noop = function () {
@@ -18,7 +18,7 @@ export function initState(vm) {
   //initProps
   initComputed(vm, opts.computed)
   
-  new Compile(vm)
+  
 }
 
 function initProps(vm, propsOptions) {

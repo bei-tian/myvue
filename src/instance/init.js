@@ -1,3 +1,4 @@
+import { initRender } from './render'
 import { initState } from './state'
 
 
@@ -8,6 +9,7 @@ export function initMixin(MyVue) {
     let vm = this
     vm._uid = uid++
     vm.$options = options
+  
     
     initState(vm)
     
@@ -17,7 +19,5 @@ export function initMixin(MyVue) {
     }
   }
   
-  MyVue.prototype.$mount = function(el) {
-    document.querySelector(el).appendChild(this.$el);
-  }
+  
 }

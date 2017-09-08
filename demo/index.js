@@ -25,7 +25,13 @@ let vm = new MyVue({
       return this.msg + this.msg2
     }
   },
-  template: '<span><span> {{msg}} </span><my-component prop1="concat"></my-component><span v-text="msg"></span><div v-text="reversedMsg"></div></span>'
+  render(createElement) {
+    return createElement('div',{}, [
+      createElement('div',{}, this.msg),
+      createElement('div',{}, this.msg2)
+    ])
+  },
+  template: '<span><span> {{msg}} </span><span v-text="msg2"></span><div v-text="reversedMsg"></div></span>'
 });
 
 console.log(vm)
