@@ -11,6 +11,7 @@ export function initMixin(MyVue) {
     vm.$options = options
   
     
+    initRender(vm)
     initState(vm)
     
     //自动挂载

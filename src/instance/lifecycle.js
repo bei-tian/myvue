@@ -1,20 +1,13 @@
-import { Compile } from '../compile'
 import { Watcher } from '../observer/watcher'
-import { createElement } from '../vdom/create-element'
-import { patch } from '../vdom/patch'
 
+import { patch } from '../vdom/patch'
 export function lifecycleMixin(MyVue) {
   MyVue.prototype.$mount = function(el) {
     let vm = this
     
-    if(!vm._vnode) {
-      vm._vnode = vm._render()
-    }
-    vm.$el = vm._vnode.mount()
-    document.querySelector(el).appendChild(vm.$el)
-    
+    vm.$el = document.querySelector(el)
     //mountComponent
-    mountComponent(vm)
+    return mountComponent(vm)
   }
   
 
@@ -22,32 +15,27 @@ export function lifecycleMixin(MyVue) {
   MyVue.prototype._update = function(vNode) {
     let vm = this
     
-    let oldVNode = vm._vnode
-    
-
-    
-    patch(oldVNode, vNode)
-    console.log(vNode)
-  }
+    const prevVNode = vm._vnode
+    vm._vnode = vNode
   
-  
-  MyVue.prototype._render = function() {
-    let vm = this
-    let render = vm.$options.render
-    let vNode = null
-    if (render) {
-      vNode = render.call(vm, createElement)
+    if (!prevVNode) {
+      // initial render 初始挂载dom
+      vm.$el = patch(vm.$el, vNode)
+    } else {
+      // updates
+      vm.$el = patch(prevVNode, vNode)
     }
-    return vNode
+    console.log(vNode)
   }
 }
 
 
 function mountComponent(vm) {
-  
-  
+
   let updateComponent = () => {
     vm._update(vm._render())
   }
   vm._watcher = new Watcher(vm, updateComponent, function () {})
+  
+  return vm
 }

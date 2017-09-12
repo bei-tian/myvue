@@ -11,6 +11,7 @@ export class VNode {
   constructor(tag, data, children) {
     this.tag = tag
     this.data = data
+    
     if(isArray(children)) {
       this.children = children
     } else {

@@ -129,6 +129,11 @@ function updateChildren (parentElm, oldCh, newCh) {
 }
 
 export function patch (oldVNode, vNode) {
+  if (oldVNode.nodeType) { //第一次挂载dom
+    createEle(vNode)
+    oldVNode.appendChild(vNode.el)
+    return vNode.el
+  }
 	if (sameVNode(oldVNode, vNode)) {
 		patchVNode(oldVNode, vNode)
 	} else {

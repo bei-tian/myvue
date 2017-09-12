@@ -1,3 +1,20 @@
+/*import Vue from 'vue'
+
+window.vm = new Vue({
+  data: {
+    message: 'Hello Vue!'
+  },
+  render (h) {
+    return h('div', [
+      h('div', this.message),
+      h('div', this.message)
+    ])
+  }
+})
+vm.$mount('#app')
+ */
+
+
 import MyVue from '../src/index';
 
 MyVue.component('my-component', {
@@ -27,6 +44,8 @@ let vm = new MyVue({
   },
   render(createElement) {
     return createElement('div',{}, [
+      createElement('div',{}, this.msg),
+      createElement('div',{}, this.msg),
       createElement('div',{}, this.msg),
       createElement('div',{}, this.msg2)
     ])
