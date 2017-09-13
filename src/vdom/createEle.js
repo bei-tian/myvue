@@ -18,7 +18,14 @@ export function createEle (vNode) {
 export function updateEle (e ,vNode, oldVNode) {
 	let i
 	//if( (i = vNode.className).length > 0 ) dom.setClass(e, i)
-	if( (i = vNode.data) !== null ) dom.setAttrs(e, i)
-	if( (i = vNode.id) !== null ) dom.setId(e, i)
+	if( (i = vNode.data.attrs) !== null ) dom.setAttrs(e, i)
+	
+	//if( (i = vNode.id) !== null ) dom.setId(e, i)
 	if( (i = vNode.children) !== null && !oldVNode) dom.appendChildren(e, i)
+  
+  if( (i = vNode.data.domProps) !== null ) {
+    for(let prop in i) {
+      e[prop] = i[prop]
+    }
+  }
 }

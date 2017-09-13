@@ -14,26 +14,10 @@ export class VNode {
     
     if(isArray(children)) {
       this.children = children
-    } else {
-      this.text = children.toString()
+    } else if(isString(children)){
+      let child = new VNode('text', {}, null)
+      child.text = children
+      this.children = [child]
     }
-  }
-  
-  mount() {
-    let el = document.createElement(this.tag)
-    
-    let children = this.children || []
-    if(this.text === '') {
-      children.map(function (child) {
-        let childEl = child.mount()
-        el.appendChild(childEl)
-      })
-    } else {
-      let childEl = document.createTextNode(this.text)
-      el.appendChild(childEl);
-    }
-    this.el = el
-    
-    return el
   }
 }

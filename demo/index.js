@@ -43,11 +43,19 @@ let vm = new MyVue({
     }
   },
   render(createElement) {
-    return createElement('div',{}, [
+    return createElement('div',{} , [
       createElement('div',{}, this.msg),
       createElement('div',{}, this.msg),
       createElement('div',{}, this.msg),
-      createElement('div',{}, this.msg2)
+      createElement('div',{
+        attrs: {
+          id: 'foo'
+        },
+        // DOM 属性
+        domProps: {
+          innerHTML: '<b>baz</b>'
+        },
+      })
     ])
   },
   template: '<span><span> {{msg}} </span><span v-text="msg2"></span><div v-text="reversedMsg"></div></span>'
