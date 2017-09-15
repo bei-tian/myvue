@@ -4,6 +4,9 @@ export function initRender(vm) {
   vm._vnode = null
   
   vm.$createElement = createElement
+  
+  
+  vm._c = createElement
 }
 
 export function renderMixin(MyVue) {

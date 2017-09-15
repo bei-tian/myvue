@@ -4,14 +4,10 @@ window.vm = new Vue({
   data: {
     message: 'Hello Vue!'
   },
-  render (h) {
-    return h('div', [
-      h('div', this.message),
-      h('div', this.message)
-    ])
-  }
+  template: '<div>A custom component!</div>'
 })
 vm.$mount('#app')
+console.log(vm)
  */
 
 
@@ -28,7 +24,8 @@ MyVue.component('my-component', {
 
 window.data = {
   msg: 'hello',
-  msg2: 'world'
+  msg2: 'world',
+  msg3: '<b>world</b>'
 }
 
 let vm = new MyVue({
@@ -42,23 +39,23 @@ let vm = new MyVue({
       return this.msg + this.msg2
     }
   },
-  render(createElement) {
-    return createElement('div',{} , [
-      createElement('div',{}, this.msg),
-      createElement('div',{}, this.msg),
-      createElement('div',{}, this.msg),
-      createElement('div',{
-        attrs: {
-          id: 'foo'
-        },
-        // DOM 属性
-        domProps: {
-          innerHTML: '<b>baz</b>'
-        },
-      })
-    ])
-  },
-  template: '<span><span> {{msg}} </span><span v-text="msg2"></span><div v-text="reversedMsg"></div></span>'
+  // render(createElement) {
+  //   return createElement('div',{} , [
+  //     createElement('div',{}, this.msg),
+  //     createElement('div',{}, this.msg),
+  //     createElement('div',{}, this.msg),
+  //     createElement('div',{
+  //       attrs: {
+  //         id: 'foo'
+  //       },
+  //       // DOM 属性
+  //       domProps: {
+  //         innerHTML: '<b>baz</b>'
+  //       },
+  //     })
+  //   ])
+  // },
+  template: '<span><span> {{msg}} </span><span v-text="msg2"></span><div v-text="reversedMsg"></div><span v-html="msg3"></span></span>'
 });
 
 console.log(vm)
