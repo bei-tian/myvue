@@ -1,31 +1,34 @@
 import { dom } from '../util/dom'
 
 export function createEle (vNode) {
-	let i, e
-	if( !vNode.el && (i = vNode.text)) {
-		e = vNode.el = dom.createTextNode(i)
-		return vNode
+
+	if(!vNode.el) {
+	  if(vNode.text) {
+      vNode.el = dom.createTextNode(vNode.text)
+      return vNode
+    }
+    if(vNode.tag) {
+      vNode.el = dom.createElement(vNode.tag)
+    }
 	}
-	if ( (i = vNode.tag) && vNode.el === null) {
-		e = vNode.el = dom.createElement(i)
-	}else if (vNode.el.nodeType === 1) {
-		e = vNode.el
-	}
-	updateEle(e, vNode)
+ 
+	updateEle(vNode.el, vNode)
 	return vNode
 }
 
 export function updateEle (e ,vNode, oldVNode) {
-	let i
-	//if( (i = vNode.className).length > 0 ) dom.setClass(e, i)
-	if( (i = vNode.data.attrs) !== null ) dom.setAttrs(e, i)
-	
-	//if( (i = vNode.id) !== null ) dom.setId(e, i)
-	if( (i = vNode.children) !== null && !oldVNode) dom.appendChildren(e, i)
+	if(vNode.data.attrs) {
+	  dom.setAttrs(e, vNode.data.attrs)
+  }
   
-  if( (i = vNode.data.domProps) !== null ) {
-    for(let prop in i) {
-      e[prop] = i[prop]
+	if(vNode.children && !oldVNode) {
+	  dom.appendChildren(e, vNode.children)
+  }
+  
+  if(vNode.data.domProps) {
+	  let props = vNode.data.domProps
+    for(let prop in props) {
+      e[prop] = props[prop]
     }
   }
 }

@@ -14,6 +14,8 @@ export class VNode {
     
     if(isArray(children)) {
       this.children = children
+    } else if(tag === 'text') {
+      this.text = children
     } else if(isString(children)){
       let child = new VNode('text', {}, null)
       child.text = children
