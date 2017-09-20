@@ -18,6 +18,8 @@ export function initState(vm) {
   //initProps
   initComputed(vm, opts.computed)
   
+  //initMothods
+  initMethods(vm, opts.methods)
   
 }
 
@@ -45,6 +47,13 @@ function initData(vm) {
     proxy(vm, '_data', key)
   })
 }
+
+function initMethods(vm, methods) {
+  for (let key in methods) {
+    vm[key] = methods[key]
+  }
+}
+
 
 function initComputed(vm, computed) {
   for (let key in computed) {
@@ -85,3 +94,4 @@ function proxy(vm, sourceKey, key) {
   });
   
 }
+

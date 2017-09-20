@@ -16,19 +16,19 @@ export function createEle (vNode) {
 	return vNode
 }
 
-export function updateEle (e ,vNode, oldVNode) {
+export function updateEle (el ,vNode, oldVNode) {
 	if(vNode.data.attrs) {
-	  dom.setAttrs(e, vNode.data.attrs)
+	  dom.setAttrs(el, vNode.data.attrs)
   }
   
 	if(vNode.children && !oldVNode) {
-	  dom.appendChildren(e, vNode.children)
+	  dom.appendChildren(el, vNode.children)
   }
   
   if(vNode.data.domProps) {
 	  let props = vNode.data.domProps
     for(let prop in props) {
-      e[prop] = props[prop]
+      el[prop] = props[prop]
     }
   }
 }
