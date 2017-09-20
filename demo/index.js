@@ -15,7 +15,6 @@ import MyVue from '../src/index';
 
 MyVue.component('my-component', {
   props:['prop1'],
-  el: '#app',
   data:{
     msg2:'hello2'
   },

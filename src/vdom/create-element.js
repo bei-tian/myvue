@@ -2,16 +2,25 @@ import {VNode} from './vnode'
 import MyVue from '../instance/index'
 
 export function createElement(tag, data, children) {
+  let vNode
   let MyVueComponent = MyVue.queueComponent[tag.toLowerCase()]
   if (MyVueComponent) {
-    fetchPropData(MyVueComponent._options, data)  //缓存子组件的prop值
-    let sub = new MyVueComponent()
-    return sub._vnode
+    vNode = createComponent(MyVueComponent, data)
   } else {
-    return new VNode(tag, data, children)
+    vNode = new VNode(tag, data, children)
   }
+  
+  return vNode
 }
 
+
+
+function createComponent(Component, data) {
+  fetchPropData(Component._options, data)  //缓存子组件的prop值
+  let sub = new Component()
+  
+  return sub._render()
+}
 
 function fetchPropData(options, data) {
   let prop = {}

@@ -1,19 +1,15 @@
 import { Watcher } from '../observer/watcher'
 import { patch } from '../vdom/patch'
-import { parse } from '../compile/parse'
+
 
 export function lifecycleMixin(MyVue) {
   MyVue.prototype.$mount = function(el) {
     let vm = this
     
-    let option = vm.$options
-    if (!option.render) {
-      option.render = parse(option.template)
-    }
     
     vm.$el = document.querySelector(el)
     //mountComponent
-    return mountComponent(vm)
+    return mountComponent(vm, el)
   }
   
 
@@ -31,7 +27,7 @@ export function lifecycleMixin(MyVue) {
       // updates
       vm.$el = patch(prevVNode, vNode)
     }
-    console.log(vNode)
+    //console.log(vNode)
   }
 }
 
