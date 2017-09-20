@@ -34,10 +34,12 @@ function compileText(node, children) {
 function compileNode(node, children) {
   let val = "''"
   let data = '{'
-  let attrs = {};
+  let attrs = '{';
   
   [].slice.call(node.attributes).forEach(attr => {
-    if(attr.name.indexOf('v-') === 0) {
+    let attrName = attr.name
+    attrName = attrName.replace('v-bind:',':')
+    if(attrName.indexOf('v-') === 0) {
       let exp = attr.value //msg,sub.msg3
       let dir = attr.name.substring(2) //text,html,model
       if (dir === 'text') {
@@ -46,13 +48,16 @@ function compileNode(node, children) {
       if (dir === 'html') {
         data = data + `domProps:{innerHTML:${exp}},`
       }
-    } else {
-      attrs[attr.name] = attr.value
+    } else if(attrName.indexOf(':') === 0) { //v-bind
+      attrs = attrs + `${attrName.substring(1)}:${attr.value},`
+    } else { //普通属性
+      attrs = attrs + `${attr.name}:${attr.value},`
     }
   })
   
   if(node.attributes.length > 0) {
-    data = data + 'attrs:' + JSON.stringify(attrs)
+    attrs = attrs + '}'
+    data = data + 'attrs:' + attrs
     data = data + '}'
     children = children + `_c('${node.tagName}',${data}, ${val}),`
   }
