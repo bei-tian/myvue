@@ -38,7 +38,15 @@ function initProps(vm, propsOptions) {
 
 
 function initData(vm) {
-  let data = vm._data = vm.$options.data
+  let data = {}
+  if(typeof vm.$options.data === "function") {
+    data = vm.$options.data()
+  } else {
+    data = vm.$options.data
+  }
+  
+  
+  vm._data = data
   
   observer(data)
   

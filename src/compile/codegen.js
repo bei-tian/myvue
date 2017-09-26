@@ -60,7 +60,7 @@ function compileNode(node, children) {
     }
     
     else { //普通属性
-      attrs = attrs + `"${attr.name}":${attr.value},`
+      attrs = attrs + `"${attr.name}":"${attr.value}",`
     }
   })
   

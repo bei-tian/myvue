@@ -15,8 +15,10 @@ import MyVue from '../src/index';
 
 MyVue.component('my-component', {
   props:['prop1'],
-  data:{
-    msg2:'hello2'
+  data(){
+    return {
+      msg2:'hello2'
+    }
   },
   template: '<div>{{ prop1 }}</div>'
 })
@@ -59,7 +61,7 @@ let vm = new MyVue({
       alert(this.message)
     }
   },
-  template: '<span><span v-on:click="showMsg"> {{msg}} </span><span v-text="msg2" test="123" test2="123"></span><div v-text="reversedMsg"></div><my-component :prop1="msg"></my-component><span v-html="msg3"></span></my-component></span>'
+  template: '<span><span v-on:click="showMsg"> {{msg}} </span><span v-text="msg2" test="123" test2="123"></span><div v-text="reversedMsg"></div><my-component :prop1="msg"></my-component><my-component prop1="msg2"></my-component><span v-html="msg3"></span></my-component></span>'
 });
 
 console.log(vm)
