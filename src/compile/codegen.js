@@ -4,6 +4,7 @@ export function generate(template) {
   let el = dom.parseToDOM(template)[0]
   
   let children = compileElement(el)
+  console.log(`_c('${el.tagName}',{}, ${children})`)
   return `_c('${el.tagName}',{}, ${children})`
 }
 
@@ -50,13 +51,15 @@ function compileNode(node, children) {
       if (dir === 'html') {
         data = data + `domProps:{innerHTML:${exp}},`
       }
-    }
-    else if(attrName.indexOf(':') === 0) { //v-bind
+      
+    } else if(attrName.indexOf(':') === 0) { //v-bind
+      
       attrs = attrs + `${attrName.substring(1)}:${attr.value},`
-    }
-    
-    else if(attrName.indexOf('@') === 0) { //v-on
+      
+    } else if(attrName.indexOf('@') === 0) { //v-on
+      
       on = on + `"${attrName.substring(1)}":${attr.value},`
+      
     }
     
     else { //普通属性
@@ -74,13 +77,13 @@ function compileNode(node, children) {
     if (on !== '{}') {
       data = data + 'on:' + on
     }
-    
-    data = data + '}'
-    children = children + `_c('${node.tagName}',${data}, ${val}),`
   }
-  if(node.attributes.length === 0) {
-    children = children + `_c('${node.tagName}',{}, `+ compileElement(node) +`),`
+  data = data + '}'
+  if(val === "''") {
+    val = compileElement(node)
   }
+  children = children + `_c('${node.tagName}',${data}, ${val}),`
+
   return children
 }
 

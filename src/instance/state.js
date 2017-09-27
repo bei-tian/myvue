@@ -94,10 +94,10 @@ function proxy(vm, sourceKey, key) {
     configurable: false,
     enumerable: true,
     get: function proxyGetter() {
-      return data[key];
+      return data[key]
     },
     set: function proxySetter(newVal) {
-      vm[sourceKey][key] = newVal;
+      vm[sourceKey][key] = newVal
     }
   });
 }
@@ -105,7 +105,7 @@ function proxy(vm, sourceKey, key) {
 
 function bind (fn, ctx) {
   function boundFn (a) {
-    var l = arguments.length;
+    var l = arguments.length
     return l
       ? l > 1
         ? fn.apply(ctx, arguments)
@@ -113,7 +113,7 @@ function bind (fn, ctx) {
       : fn.call(ctx)
   }
   // record original fn length
-  boundFn._length = fn.length;
+  boundFn._length = fn.length
   return boundFn
 }
 
