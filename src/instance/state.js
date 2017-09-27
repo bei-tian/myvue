@@ -58,7 +58,7 @@ function initData(vm) {
 
 function initMethods(vm, methods) {
   for (let key in methods) {
-    vm[key] = methods[key]
+    vm[key] = methods[key] === null ? noop : bind(methods[key], vm);
   }
 }
 
@@ -100,6 +100,20 @@ function proxy(vm, sourceKey, key) {
       vm[sourceKey][key] = newVal;
     }
   });
-  
+}
+
+
+function bind (fn, ctx) {
+  function boundFn (a) {
+    var l = arguments.length;
+    return l
+      ? l > 1
+        ? fn.apply(ctx, arguments)
+        : fn.call(ctx, a)
+      : fn.call(ctx)
+  }
+  // record original fn length
+  boundFn._length = fn.length;
+  return boundFn
 }
 

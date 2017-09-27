@@ -85,8 +85,16 @@ let dom = {
             ele.style[j] = s[j]
           }
         }else {
-          ele[k] = s
+          ele.setAttribute(k, s)
         }
+      }
+    }
+  },
+  
+  addEvent(el, obj) {
+    if(el && isObject(obj)) {
+      for(let k in obj) {
+        el.addEventListener(k, obj[k])
       }
     }
   },

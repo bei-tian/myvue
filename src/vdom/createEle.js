@@ -2,18 +2,22 @@ import { dom } from '../util/dom'
 
 export function createEle (vNode) {
 
-	if(!vNode.el) {
-	  if(vNode.text) {
+  if(!vNode.el) {
+    if(vNode.text) {
       vNode.el = dom.createTextNode(vNode.text)
       return vNode
     }
     if(vNode.tag) {
       vNode.el = dom.createElement(vNode.tag)
     }
-	}
- 
-	updateEle(vNode.el, vNode)
-	return vNode
+  }
+  //绑定事件
+  if(vNode.data.on) {
+    dom.addEvent(vNode.el, vNode.data.on)
+  }
+  
+  updateEle(vNode.el, vNode)
+  return vNode
 }
 
 export function updateEle (el ,vNode, oldVNode) {

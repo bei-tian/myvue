@@ -58,10 +58,10 @@ let vm = new MyVue({
   // },
   methods: {
     showMsg:function () {
-      alert(this.message)
+      alert(this.msg)
     }
   },
-  template: '<span><span v-on:click="showMsg"> {{msg}} </span><span v-text="msg2" test="123" test2="123"></span><div v-text="reversedMsg"></div><my-component :prop1="msg"></my-component><my-component prop1="msg2"></my-component><span v-html="msg3"></span></my-component></span>'
+  template: '<span><span> {{msg}} </span><span v-text="msg2" test="123" :test2="msg" v-on:click="showMsg"></span><div v-text="reversedMsg"></div><my-component :prop1="msg"></my-component><my-component prop1="msg2"></my-component><span v-html="msg3"></span></my-component></span>'
 });
 
 console.log(vm)
