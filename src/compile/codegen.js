@@ -4,7 +4,6 @@ export function generate(template) {
   let el = dom.parseToDOM(template)[0]
   
   let children = compileElement(el)
-  console.log(`_c('${el.tagName}',{}, ${children})`)
   return `_c('${el.tagName}',{}, ${children})`
 }
 
